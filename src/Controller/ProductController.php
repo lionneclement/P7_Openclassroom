@@ -28,32 +28,31 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class ProductController extends AbstractFOSRestController
 {
     /**
-     * Get one product
+     * FInd one product
      * 
      * @Rest\Get(
      *      path = "/product/{id}",
-     *      name = "get_one_product",
+     *      name = "find_one_product",
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(statusCode=200)
      */
-    public function getOneProduct(Product $product)
+    public function findOneProduct(Product $product)
     {
         return $product;
     }
     /**
-     * Get all products
+     * Find all products
      * 
      * @Rest\Get(
      *      path = "/products",
-     *      name = "get_all_product"
+     *      name = "find_all_product"
      * )
      * @Rest\View(statusCode=200)
      */
-    public function getAllProduct()
+    public function findAllProduct()
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-
         return $products;
     }
 }
