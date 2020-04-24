@@ -16,9 +16,12 @@ use App\Entity\Customer;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /** 
  * The class is for customer
+ * 
+ * @Route("/api", name="api_") 
  * 
  * @category Controller
  * @package  Controller

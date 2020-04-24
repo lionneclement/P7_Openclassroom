@@ -15,9 +15,12 @@ namespace App\Controller;
 use App\Entity\Product;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /** 
  * The class is for product
+ * 
+ * @Route("/api", name="api_")
  * 
  * @category Controller
  * @package  Controller
