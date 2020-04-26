@@ -35,8 +35,8 @@ class CustomerController extends AbstractFOSRestController
      * Add one customer
      * 
      * @Rest\Post(
-     *       path = "/customer",
-     *       name = "customer_add"
+     *       path = "/customer/add",
+     *       name = "add_one_customer"
      * )
      * @Rest\View(statusCode=201)
      */
@@ -45,6 +45,7 @@ class CustomerController extends AbstractFOSRestController
         $customer = new Customer;
         $customer->setName($request->request->get('name'));
         $customer->setEmail($request->request->get('email'));
+        $customer->setClientId($this->getUser());
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($customer);
@@ -54,8 +55,8 @@ class CustomerController extends AbstractFOSRestController
      * Delete one customer
      * 
      * @Rest\Delete(
-     *      path = "/customer/{id}",
-     *      name = "customer_delete",
+     *      path = "/customer/delete/{id}",
+     *      name = "delete_one_customer",
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(statusCode=200)
@@ -74,7 +75,7 @@ class CustomerController extends AbstractFOSRestController
      *      name = "find_one_customer",
      *      requirements = {"id"="\d+"}
      * )
-     * @Rest\View(statusCode=200)
+     * @Rest\View(serializerGroups = {"one"}, statusCode=200)
      */
     public function findOneCustomer(Customer $customer)
     {
@@ -87,7 +88,7 @@ class CustomerController extends AbstractFOSRestController
      *      path = "/customers",
      *      name = "find_all_customer"
      * )
-     * @Rest\View(statusCode=200)
+     * @Rest\View(serializerGroups = {"all"}, statusCode=200)
      */
     public function findAllCustomer()
     {

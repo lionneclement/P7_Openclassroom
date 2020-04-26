@@ -38,7 +38,7 @@ class ProductController extends AbstractFOSRestController
      *      name = "find_one_product",
      *      requirements = {"id"="\d+"}
      * )
-     * @Rest\View(statusCode=200)
+     * @Rest\View(serializerGroups = {"one"},statusCode=200)
      */
     public function findOneProduct(Product $product)
     {
@@ -51,7 +51,7 @@ class ProductController extends AbstractFOSRestController
      *      path = "/products",
      *      name = "find_all_product"
      * )
-     * @Rest\View(statusCode=200)
+     * @Rest\View(serializerGroups = {"all"},statusCode=200)
      */
     public function findAllProduct()
     {
