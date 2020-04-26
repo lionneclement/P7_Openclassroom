@@ -57,7 +57,6 @@ class Customer
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\client", inversedBy="customers")
      * @ORM\JoinColumn(nullable=false)
-     * @Serializer\Groups({"all","one"})
      */
     private $clientId;
 
