@@ -15,8 +15,9 @@ namespace App\Controller;
 use App\Entity\Customer;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Validator\Constraints;
 
 /** 
  * The class is for customer
@@ -36,15 +37,22 @@ class CustomerController extends AbstractFOSRestController
      * 
      * @Rest\Post(
      *       path = "/customer/add",
-     *       name = "add_one_customer"
-     * )
+     *       name = "add_one_customer")
+     * @Rest\RequestParam(
+     *       name="name",
+     *       requirements="[a-zA-Z]+",
+     *       description="Name")
+     * @Rest\RequestParam(
+     *       name="email",
+     *       requirements=@Constraints\Email,
+     *       description="Email")
      * @Rest\View(statusCode=201)
      */
-    public function addOneCustomer(Request $request)
+    public function addOneCustomer(ParamFetcher $paramFetcher)
     {
         $customer = new Customer;
-        $customer->setName($request->request->get('name'));
-        $customer->setEmail($request->request->get('email'));
+        $customer->setName($paramFetcher->get('name'));
+        $customer->setEmail($paramFetcher->get('email'));
         $customer->setClientId($this->getUser());
 
         $entityManager = $this->getDoctrine()->getManager();
