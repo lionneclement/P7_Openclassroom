@@ -17,6 +17,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Constraints;
 
 /** 
@@ -67,10 +68,13 @@ class CustomerController extends AbstractFOSRestController
      *      name = "delete_customer",
      *      requirements = {"id"="\d+"}
      * )
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=204)
      */
     public function deleteCustomer(Customer $customer)
     {
+        if ($this->getUser() != $customer->getClientId()) {
+            throw new HttpException(404, 'Page not found');
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($customer);
         $entityManager->flush();
@@ -87,6 +91,9 @@ class CustomerController extends AbstractFOSRestController
      */
     public function findCustomer(Customer $customer)
     {
+        if ($this->getUser() != $customer->getClientId()) {
+            throw new HttpException(404, 'Page not found');
+        }
         return $customer;
     }
     /**
@@ -100,6 +107,36 @@ class CustomerController extends AbstractFOSRestController
      */
     public function findAllCustomer()
     {
-        return $this->getDoctrine()->getRepository(Customer::class)->findAll();
+        return $this->getDoctrine()->getRepository(Customer::class)->findBy(['clientId'=> $this->getUser()]);
+    }
+    /**
+     * Update customer
+     * 
+     * @Rest\Patch(
+     *      path = "/customer/{id}",
+     *      name = "update_customer",
+     *      requirements = {"id"="\d+"}
+     * )
+     * @Rest\RequestParam(
+     *       name="name",
+     *       requirements="[a-zA-Z]+",
+     *       description="Name")
+     * @Rest\RequestParam(
+     *       name="email",
+     *       requirements=@Constraints\Email,
+     *       description="Email")
+     * @Rest\View(statusCode=204)
+     */
+    public function updateCustomer(Customer $customer, ParamFetcher $paramFetcher)
+    {
+        if ($this->getUser() != $customer->getClientId()) {
+            throw new HttpException(404, 'Page not found');
+        }
+        $customer->setName($paramFetcher->get('name'));
+        $customer->setEmail($paramFetcher->get('email'));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($customer);
+        $entityManager->flush();
+
     }
 }

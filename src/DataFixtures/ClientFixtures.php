@@ -21,11 +21,18 @@ class ClientFixtures extends Fixture
         $client->setEmail('client@gmail.com');
         $client->setName('client');
         $client->setRoles(['ROLE_CLIENT']);
-
         $encoded = $this->encoder->encodePassword($client, 'password');
         $client->setPassword($encoded);
-
         $manager->persist($client);
+
+        $client = new Client();
+        $client->setEmail('client1@gmail.com');
+        $client->setName('client');
+        $client->setRoles(['ROLE_CLIENT']);
+        $encoded = $this->encoder->encodePassword($client, 'password');
+        $client->setPassword($encoded);
+        $manager->persist($client);
+
         $manager->flush();
     }
 }
