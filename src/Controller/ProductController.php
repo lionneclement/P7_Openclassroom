@@ -17,6 +17,8 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Contracts\Cache\CacheInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use FOS\RestBundle\Request\ParamFetcher;
 
 /** 
  * The class is for product
@@ -52,13 +54,32 @@ class ProductController extends AbstractFOSRestController
      *      path = "/product",
      *      name = "find_all_product"
      * )
+     * @Rest\QueryParam(
+     *       name="page",
+     *       requirements="\d+",
+     *       default="1",
+     *       description="page")
+     * @Rest\QueryParam(
+     *       name="limit",
+     *       requirements="\d+",
+     *       default="10",
+     *       description="limit")
      * @Rest\View(serializerGroups = {"all"},statusCode=200)
      */
-    public function findAllProduct(CacheInterface $cache)
+    public function findAllProduct(CacheInterface $cache, PaginatorInterface $paginator,ParamFetcher $paramFetcher)
     {
-        $productCache = $cache->getItem('products');
+        $productCache = $cache->getItem('productPage'.$paramFetcher->get('page'));
         if (!$productCache->isHit()) {
-            $product = $this->getDoctrine()->getRepository(Product::class)->findAll();
+            $pagination = $paginator->paginate(
+                $this->getDoctrine()->getRepository(Product::class)->findAll(),
+                $paramFetcher->get('page'),
+                $paramFetcher->get('limit')
+            );
+            $product = [
+                $pagination->getItems(),
+                'currentPageNumber' => $pagination->getCurrentPageNumber(),
+                'totalCount' => $pagination->getTotalItemCount()
+            ];
             $productCache->set($product)->expiresAfter(300);
             $cache->save($productCache);
         }
