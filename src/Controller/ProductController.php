@@ -16,6 +16,7 @@ use App\Entity\Product;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /** 
  * The class is for product
@@ -53,8 +54,14 @@ class ProductController extends AbstractFOSRestController
      * )
      * @Rest\View(serializerGroups = {"all"},statusCode=200)
      */
-    public function findAllProduct()
+    public function findAllProduct(CacheInterface $cache)
     {
-        return $this->getDoctrine()->getRepository(Product::class)->findAll();
+        $productCache = $cache->getItem('products');
+        if (!$productCache->isHit()) {
+            $product = $this->getDoctrine()->getRepository(Product::class)->findAll();
+            $productCache->set($product)->expiresAfter(300);
+            $cache->save($productCache);
+        }
+        return $productCache->get();
     }
 }
