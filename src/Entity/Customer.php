@@ -13,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
  * 
  * @Hateoas\Relation("self",
  *      href = @Hateoas\Route(
- *          "api_find_one_customer",
+ *          "api_find_customer",
  *          parameters = {
  *              "id" = "expr(object.getId())"
  *          },
@@ -23,7 +23,7 @@ use JMS\Serializer\Annotation as Serializer;
  * )
  * @Hateoas\Relation("delete",
  *      href = @Hateoas\Route(
- *          "api_delete_one_customer",
+ *          "api_delete_customer",
  *          parameters = {
  *              "id" = "expr(object.getId())"
  *          },

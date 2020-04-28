@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
  * 
  * @Hateoas\Relation("self",
  *      href = @Hateoas\Route(
- *          "api_find_one_product",
+ *          "api_find_product",
  *          parameters = {
  *              "id" = "expr(object.getId())"
  *          },

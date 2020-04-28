@@ -36,8 +36,8 @@ class CustomerController extends AbstractFOSRestController
      * Add one customer
      * 
      * @Rest\Post(
-     *       path = "/customer/add",
-     *       name = "add_one_customer")
+     *       path = "/customer",
+     *       name = "create_customer")
      * @Rest\RequestParam(
      *       name="name",
      *       requirements="[a-zA-Z]+",
@@ -48,7 +48,7 @@ class CustomerController extends AbstractFOSRestController
      *       description="Email")
      * @Rest\View(statusCode=201)
      */
-    public function addOneCustomer(ParamFetcher $paramFetcher)
+    public function createCustomer(ParamFetcher $paramFetcher)
     {
         $customer = new Customer;
         $customer->setName($paramFetcher->get('name'));
@@ -63,13 +63,13 @@ class CustomerController extends AbstractFOSRestController
      * Delete one customer
      * 
      * @Rest\Delete(
-     *      path = "/customer/delete/{id}",
-     *      name = "delete_one_customer",
+     *      path = "/customer/{id}",
+     *      name = "delete_customer",
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(statusCode=200)
      */
-    public function deleteOneCustomer(Customer $customer)
+    public function deleteCustomer(Customer $customer)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($customer);
@@ -80,27 +80,26 @@ class CustomerController extends AbstractFOSRestController
      * 
      * @Rest\Get(
      *      path = "/customer/{id}",
-     *      name = "find_one_customer",
+     *      name = "find_customer",
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(serializerGroups = {"one"}, statusCode=200)
      */
-    public function findOneCustomer(Customer $customer)
+    public function findCustomer(Customer $customer)
     {
         return $customer;
     }
     /**
-     * Find all customers
+     * Find all customer
      * 
      * @Rest\Get(
-     *      path = "/customers",
+     *      path = "/customer",
      *      name = "find_all_customer"
      * )
      * @Rest\View(serializerGroups = {"all"}, statusCode=200)
      */
     public function findAllCustomer()
     {
-        $customers = $this->getDoctrine()->getRepository(Customer::class)->findAll();
-        return $customers;
+        return $this->getDoctrine()->getRepository(Customer::class)->findAll();
     }
 }

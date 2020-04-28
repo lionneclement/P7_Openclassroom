@@ -35,12 +35,12 @@ class ProductController extends AbstractFOSRestController
      * 
      * @Rest\Get(
      *      path = "/product/{id}",
-     *      name = "find_one_product",
+     *      name = "find_product",
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(serializerGroups = {"one"},statusCode=200)
      */
-    public function findOneProduct(Product $product)
+    public function findProduct(Product $product)
     {
         return $product;
     }
@@ -48,14 +48,13 @@ class ProductController extends AbstractFOSRestController
      * Find all products
      * 
      * @Rest\Get(
-     *      path = "/products",
+     *      path = "/product",
      *      name = "find_all_product"
      * )
      * @Rest\View(serializerGroups = {"all"},statusCode=200)
      */
     public function findAllProduct()
     {
-        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        return $products;
+        return $this->getDoctrine()->getRepository(Product::class)->findAll();
     }
 }
