@@ -12,6 +12,7 @@
  */
 namespace App\Controller;
 
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Customer;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -103,11 +104,30 @@ class CustomerController extends AbstractFOSRestController
      *      path = "/customer",
      *      name = "find_all_customer"
      * )
+     * @Rest\QueryParam(
+     *       name="page",
+     *       requirements="\d+",
+     *       default="1",
+     *       description="page")
+     * @Rest\QueryParam(
+     *       name="limit",
+     *       requirements="\d+",
+     *       default="10",
+     *       description="limit")
      * @Rest\View(serializerGroups = {"all"}, statusCode=200)
      */
-    public function findAllCustomer()
+    public function findAllCustomer(PaginatorInterface $paginator, ParamFetcher $paramFetcher)
     {
-        return $this->getDoctrine()->getRepository(Customer::class)->findBy(['clientId'=> $this->getUser()]);
+        $pagination = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Customer::class)->findBy(['clientId'=> $this->getUser()]),
+            $paramFetcher->get('page'),
+            $paramFetcher->get('limit')
+        );
+        return [
+            $pagination->getItems(),
+            'currentPageNumber' => $pagination->getCurrentPageNumber(),
+            'totalCount' => $pagination->getTotalItemCount()
+        ];
     }
     /**
      * Update customer
