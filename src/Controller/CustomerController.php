@@ -124,7 +124,7 @@ class CustomerController extends AbstractFOSRestController
             $paramFetcher->get('limit')
         );
         return [
-            $pagination->getItems(),
+            'items' => $pagination->getItems(),
             'currentPageNumber' => $pagination->getCurrentPageNumber(),
             'totalCount' => $pagination->getTotalItemCount()
         ];

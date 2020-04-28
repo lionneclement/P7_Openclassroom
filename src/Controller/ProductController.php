@@ -76,7 +76,7 @@ class ProductController extends AbstractFOSRestController
                 $paramFetcher->get('limit')
             );
             $product = [
-                $pagination->getItems(),
+                'items' => $pagination->getItems(),
                 'currentPageNumber' => $pagination->getCurrentPageNumber(),
                 'totalCount' => $pagination->getTotalItemCount()
             ];
