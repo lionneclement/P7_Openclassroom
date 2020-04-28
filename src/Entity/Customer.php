@@ -55,7 +55,7 @@ class Customer
     private $email;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\client", inversedBy="customers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="customers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $clientId;
