@@ -20,6 +20,9 @@ use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Constraints;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 /** 
  * The class is for customer
@@ -35,7 +38,7 @@ use Symfony\Component\Validator\Constraints;
 class CustomerController extends AbstractFOSRestController
 {
     /**
-     * Add one customer
+     * Create customer
      * 
      * @Rest\Post(
      *       path = "/customer",
@@ -49,6 +52,21 @@ class CustomerController extends AbstractFOSRestController
      *       requirements=@Constraints\Email,
      *       description="Email")
      * @Rest\View(statusCode=201)
+     * 
+     * @SWG\Response(
+     *     response=201,
+     *     description="Create customer"
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Name and Email not be null"
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="Email already used"
+     * )
+     * @SWG\Tag(name="Customer")
+     * @Security(name="Bearer")
      */
     public function createCustomer(ParamFetcher $paramFetcher)
     {
@@ -62,7 +80,7 @@ class CustomerController extends AbstractFOSRestController
         $entityManager->flush(); 
     }
     /**
-     * Delete one customer
+     * Delete customer
      * 
      * @Rest\Delete(
      *      path = "/customer/{id}",
@@ -70,6 +88,17 @@ class CustomerController extends AbstractFOSRestController
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(statusCode=204)
+     * 
+     * @SWG\Response(
+     *     response=204,
+     *     description="Delete customer"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found"
+     * )
+     * @SWG\Tag(name="Customer")
+     * @Security(name="Bearer")
      */
     public function deleteCustomer(Customer $customer)
     {
@@ -89,6 +118,18 @@ class CustomerController extends AbstractFOSRestController
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(serializerGroups = {"one"}, statusCode=200)
+     * 
+     * @SWG\Response(
+     *     response=200,
+     *     description="Find one customer"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found",
+     *     @Model(type=Customer::class, groups={"one"})
+     * )
+     * @SWG\Tag(name="Customer")
+     * @Security(name="Bearer")
      */
     public function findCustomer(Customer $customer)
     {
@@ -115,6 +156,14 @@ class CustomerController extends AbstractFOSRestController
      *       default="10",
      *       description="limit")
      * @Rest\View(serializerGroups = {"all"}, statusCode=200)
+     * 
+     * @SWG\Response(
+     *       response=200,
+     *       description="Find all customer",
+     *       @Model(type=Customer::class, groups={"all"})
+     * )
+     * @SWG\Tag(name="Customer")
+     * @Security(name="Bearer")
      */
     public function findAllCustomer(PaginatorInterface $paginator, ParamFetcher $paramFetcher)
     {
@@ -146,6 +195,25 @@ class CustomerController extends AbstractFOSRestController
      *       requirements=@Constraints\Email,
      *       description="Email")
      * @Rest\View(statusCode=204)
+     * 
+     * @SWG\Response(
+     *     response=204,
+     *     description="Update customer"
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Name and Email not be null"
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found"
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="Email already used"
+     * )
+     * @SWG\Tag(name="Customer")
+     * @Security(name="Bearer")
      */
     public function updateCustomer(Customer $customer, ParamFetcher $paramFetcher)
     {

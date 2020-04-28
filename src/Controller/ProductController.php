@@ -19,6 +19,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 /** 
  * The class is for product
@@ -34,7 +37,7 @@ use FOS\RestBundle\Request\ParamFetcher;
 class ProductController extends AbstractFOSRestController
 {
     /**
-     * FInd one product
+     * Find one product
      * 
      * @Rest\Get(
      *      path = "/product/{id}",
@@ -42,6 +45,18 @@ class ProductController extends AbstractFOSRestController
      *      requirements = {"id"="\d+"}
      * )
      * @Rest\View(serializerGroups = {"one"},statusCode=200)
+     * 
+     * @SWG\Response(
+     *     response=200,
+     *     description="Find one product",
+     *     @Model(type=Product::class, groups={"one"})
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Page not found"
+     * )
+     * @SWG\Tag(name="Product")
+     * @Security(name="Bearer")
      */
     public function findProduct(Product $product)
     {
@@ -65,6 +80,14 @@ class ProductController extends AbstractFOSRestController
      *       default="10",
      *       description="limit")
      * @Rest\View(serializerGroups = {"all"},statusCode=200)
+     * 
+     * @SWG\Response(
+     *     response=200,
+     *     description="Find all product",
+     *     @Model(type=Product::class, groups={"all"})
+     * )
+     * @SWG\Tag(name="Product")
+     * @Security(name="Bearer")
      */
     public function findAllProduct(CacheInterface $cache, PaginatorInterface $paginator,ParamFetcher $paramFetcher)
     {
