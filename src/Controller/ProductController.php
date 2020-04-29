@@ -49,7 +49,7 @@ class ProductController extends AbstractFOSRestController
      * @SWG\Response(
      *     response=200,
      *     description="Find one product",
-     *     @Model(type=Product::class, groups={"one"})
+     * @Model(type=Product::class, groups={"one"})
      * )
      * @SWG\Response(
      *     response=404,
@@ -84,7 +84,7 @@ class ProductController extends AbstractFOSRestController
      * @SWG\Response(
      *     response=200,
      *     description="Find all product",
-     *     @Model(type=Product::class, groups={"all"})
+     * @Model(type=Product::class, groups={"all"})
      * )
      * @SWG\Tag(name="Product")
      * @Security(name="Bearer")

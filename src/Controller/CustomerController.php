@@ -121,12 +121,12 @@ class CustomerController extends AbstractFOSRestController
      * 
      * @SWG\Response(
      *     response=200,
-     *     description="Find one customer"
+     *     description="Find one customer",
+     *     @Model(type=Customer::class, groups={"one"})
      * )
      * @SWG\Response(
      *     response=404,
-     *     description="Page not found",
-     *     @Model(type=Customer::class, groups={"one"})
+     *     description="Page not found"
      * )
      * @SWG\Tag(name="Customer")
      * @Security(name="Bearer")
@@ -160,7 +160,7 @@ class CustomerController extends AbstractFOSRestController
      * @SWG\Response(
      *       response=200,
      *       description="Find all customer",
-     *       @Model(type=Customer::class, groups={"all"})
+     * @Model(type=Customer::class, groups={"all"})
      * )
      * @SWG\Tag(name="Customer")
      * @Security(name="Bearer")
