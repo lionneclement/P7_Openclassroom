@@ -11,6 +11,6 @@
    
 6) Run server with `bin/console server:run` or `symfony server:start`and go to localhost with port 8000
    
-7) For get the documentation you need to go in http://localhost:8000/api/doc
+7) For get the documentation you need to go in [here](http://localhost:8000/api/doc)
 
 Normally everything works, If you have a error or send me an mail to lionneclement@gmail.com or create a issue
